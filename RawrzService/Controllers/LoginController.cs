@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using RawrzService.Models;
 
 namespace RawrzService.Controllers
@@ -10,12 +11,20 @@ namespace RawrzService.Controllers
             return new User
             {
                 Id = 55,
+                Username = "Cerealean",
                 FirstName = "Wendy",
                 LastName = "Crawford",
                 Email = "wendy.crawford@fakemail.com",
                 Phone = "5739794672",
                 CanEmail = true,
-                CanText = true
+                CanText = true,
+                TwoFactorAuthentication = true,
+                Authentication = new Authentication
+                {
+                    Expires = DateTime.Now.AddDays(3),
+                    LoggedIn = DateTime.Now,
+                    Token = Guid.NewGuid().ToString()
+                }
             };
         }
     }
