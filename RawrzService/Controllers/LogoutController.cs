@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Web.Http;
+﻿using System.Web.Http;
 using RawrzService.Models;
 
 namespace RawrzService.Controllers
@@ -8,7 +7,7 @@ namespace RawrzService.Controllers
     {
         public void Post(User user)
         {
-            Thread.Sleep(1000);
+            
         }
     }
 }
