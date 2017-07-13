@@ -1,5 +1,5 @@
-﻿using System.Web.Http;
-using RawrzService.Models;
+﻿using RawrzMe.Library.Models;
+using System.Web.Http;
 
 namespace RawrzService.Controllers
 {

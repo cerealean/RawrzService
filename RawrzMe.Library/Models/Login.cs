@@ -1,4 +1,4 @@
-﻿namespace RawrzService.Models
+﻿namespace RawrzMe.Library.Models
 {
     public class Login
     {

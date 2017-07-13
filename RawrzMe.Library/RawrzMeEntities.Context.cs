@@ -9,10 +9,9 @@
 
 namespace RawrzMe.Library
 {
-    using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class RawrzMeEntities : DbContext
     {
         public RawrzMeEntities()
@@ -25,7 +24,6 @@ namespace RawrzMe.Library
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<UserInformation> UserInformations { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

@@ -4,13 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RawrzMeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="UserInformation">
+    <Schema Namespace="RawrzMeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Users">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
           <Property Name="first_name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="last_name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
@@ -19,54 +20,13 @@
           <Property Name="can_email" Type="bit" Nullable="false" />
           <Property Name="two_factor_authentication" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="is_active" Type="bit" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_UserInformation_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="UserInformation" Type="Self.UserInformation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserInformation">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="RawrzMeModelStoreContainer">
-          <EntitySet Name="UserInformation" EntityType="Self.UserInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_UserInformation_Users" Association="Self.FK_UserInformation_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserInformation" EntitySet="UserInformation" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RawrzMeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="UserInformation">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="first_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="last_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="phone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="can_text" Type="Boolean" Nullable="false" />
-          <Property Name="can_email" Type="Boolean" Nullable="false" />
-          <Property Name="two_factor_authentication" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserInformation_Users" FromRole="UserInformation" ToRole="Users" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="id" />
@@ -74,27 +34,16 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="is_active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UserInformations" Relationship="Self.FK_UserInformation_Users" FromRole="Users" ToRole="UserInformation" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="can_text" Type="Boolean" Nullable="false" />
+          <Property Name="can_email" Type="Boolean" Nullable="false" />
+          <Property Name="two_factor_authentication" Type="Boolean" Nullable="false" />
         </EntityType>
-        <Association Name="FK_UserInformation_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="UserInformation" Type="Self.UserInformation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserInformation">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="RawrzMeEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="UserInformations" EntityType="Self.UserInformation" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_UserInformation_Users" Association="Self.FK_UserInformation_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserInformation" EntitySet="UserInformations" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -102,24 +51,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RawrzMeModelStoreContainer" CdmEntityContainer="RawrzMeEntities">
-          <EntitySetMapping Name="UserInformations">
-            <EntityTypeMapping TypeName="RawrzMeModel.UserInformation">
-              <MappingFragment StoreEntitySet="UserInformation">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="last_name" ColumnName="last_name" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="can_text" ColumnName="can_text" />
-                <ScalarProperty Name="can_email" ColumnName="can_email" />
-                <ScalarProperty Name="two_factor_authentication" ColumnName="two_factor_authentication" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="RawrzMeModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="two_factor_authentication" ColumnName="two_factor_authentication" />
+                <ScalarProperty Name="can_email" ColumnName="can_email" />
+                <ScalarProperty Name="can_text" ColumnName="can_text" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="is_active" ColumnName="is_active" />

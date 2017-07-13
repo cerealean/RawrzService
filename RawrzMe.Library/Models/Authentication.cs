@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RawrzService.Models
+namespace RawrzMe.Library.Models
 {
     public class Authentication
     {
