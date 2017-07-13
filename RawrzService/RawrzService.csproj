@@ -198,27 +198,6 @@
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawrzMeEntities.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RawrzMeEntities.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RawrzMeEntities.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RawrzMeEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RawrzMeEntities.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RawrzMeEntities.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>RawrzMeEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserInformation.cs">
-      <DependentUpon>RawrzMeEntities.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -227,16 +206,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="RawrzMeEntities.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RawrzMeEntities.edmx</DependentUpon>
-      <LastGenOutput>RawrzMeEntities.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="RawrzMeEntities.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RawrzMeEntities.edmx</DependentUpon>
-      <LastGenOutput>RawrzMeEntities.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -260,13 +229,6 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="RawrzMeEntities.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RawrzMeEntities.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="RawrzMeEntities.edmx.diagram">
-      <DependentUpon>RawrzMeEntities.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

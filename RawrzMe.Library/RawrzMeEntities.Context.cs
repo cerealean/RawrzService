@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RawrzService
+namespace RawrzMe.Library
 {
     using System;
     using System.Data.Entity;
