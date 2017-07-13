@@ -7,7 +7,7 @@ namespace RawrzService.Controllers
     {
         public User Post(Login loginModel)
         {
-            return new User();
+            return new RawrzMe.Library.Services.Login().AttemptLogin(loginModel);
         }
     }
 }
