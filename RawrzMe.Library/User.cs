@@ -9,7 +9,9 @@
 
 namespace RawrzMe.Library
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class User
     {
         public int id { get; set; }
