@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using RawrzMe.Library.Daos;
+using RawrzMe.Library.Exceptions;
 using RawrzMe.Library.Models;
 using Sodium;
 
@@ -11,25 +12,32 @@ namespace RawrzMe.Library.Services
         private readonly UserDao _userDao = new UserDao();
         private readonly Encoding _defaultEncoding = Encoding.UTF8;
 
-        public bool AreUserCredentialsValid(Models.Login loginModel)
+        public bool AreUserCredentialsValid(string username, string password)
         {
-            var userAuthentication = _userDao.GetUserAuthenticationByUsername(loginModel.Username);
-            var bytePassword = _defaultEncoding.GetBytes(loginModel.Password);
+            var userAuthentication = _userDao.GetUserAuthenticationByUsername(username);
+            var bytePassword = _defaultEncoding.GetBytes(password);
             return PasswordHash.ScryptHashStringVerify(userAuthentication.Hash, bytePassword);
         }
 
-        public void UpdatePassword(Models.Login loginModel)
+        public void CreateNewUser(NewUser newUser)
         {
-            var userAuthentication = _userDao.GetUserAuthenticationByUsername(loginModel.Username);
+            _userDao.ExecuteInTransaction(() =>
+            {
+                _userDao.CreateUser(newUser);
+                CreateUserAuthentication(newUser.Username, newUser.Password);
+            });
+        }
 
-            if (userAuthentication != null)
+        public void UpdatePassword(PasswordChange passwordChange)
+        {
+            var userAuthentication = _userDao.GetUserAuthenticationByUsername(passwordChange.Username);
+
+            if (userAuthentication == null)
             {
-                UpdateUserAuthentication(userAuthentication, loginModel.Password);
+                throw new UserNotFoundException($"Given user {passwordChange.Username} was not found");
             }
-            else
-            {
-                CreateUserAuthentication(loginModel);
-            }
+
+            UpdateUserAuthentication(userAuthentication, passwordChange.NewPassword);
         }
 
         private void UpdateUserAuthentication(UserAuthentication userAuthentication, string password)
@@ -42,12 +50,12 @@ namespace RawrzMe.Library.Services
             _userDao.UpdateUserAuthentication(userAuthentication);
         }
 
-        private void CreateUserAuthentication(Models.Login loginModel)
+        private void CreateUserAuthentication(string username, string password)
         {
             var salt = PasswordHash.ScryptGenerateSalt();
-            var bytePassword = _defaultEncoding.GetBytes(loginModel.Password);
+            var bytePassword = _defaultEncoding.GetBytes(password);
             var hash = PasswordHash.ScryptHashBinary(bytePassword, salt);
-            var user = _userDao.GetUserByUsername(loginModel.Username);
+            var user = _userDao.GetUserByUsername(username);
             _userDao.CreateUserAuthentication(new UserAuthentication
             {
                 UserId = user.Id,

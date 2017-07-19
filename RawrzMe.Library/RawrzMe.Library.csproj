@@ -55,10 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Daos\UserDao.cs" />
+    <Compile Include="Exceptions\UsernameAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Mapper\User.cs" />
     <Compile Include="Mapper\UserAuthentication.cs" />
     <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\NewUser.cs" />
+    <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserAuthentication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

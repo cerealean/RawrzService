@@ -1,12 +1,30 @@
 ﻿using RawrzMe.Library.Mapper;
 using System;
 using System.Linq;
+using RawrzMe.Library.Models;
 
 namespace RawrzMe.Library.Daos
 {
     internal class UserDao : IDisposable
     {
         private readonly RawrzMeEntities _rawrzMeEntities = new RawrzMeEntities();
+
+        internal void ExecuteInTransaction(Action action)
+        {
+            using (var transaction = _rawrzMeEntities.Database.BeginTransaction())
+            {
+                try
+                {
+                    action.Invoke();
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction?.Rollback();
+                    throw;
+                }
+            }
+        }
 
         internal Models.User GetUserByUsername(string username)
         {
@@ -27,6 +45,23 @@ namespace RawrzMe.Library.Daos
             var userAuthEntity = _rawrzMeEntities.user_authentication.First(ua => ua.id == userAuthentication.Id);
             userAuthEntity.salt = userAuthentication.Salt;
             userAuthEntity.hash = userAuthentication.Hash;
+            _rawrzMeEntities.SaveChanges();
+        }
+
+        internal void CreateUser(NewUser newUser)
+        {
+            var newUserEntity = new user
+            {
+                first_name = newUser.FirstName,
+                last_name = newUser.LastName,
+                email = newUser.Email,
+                is_active = true,
+                can_email = newUser.CanEmail,
+                can_text = newUser.CanText,
+                phone = newUser.Phone,
+                username = newUser.Username
+            };
+            _rawrzMeEntities.users.Add(newUserEntity);
             _rawrzMeEntities.SaveChanges();
         }
 
