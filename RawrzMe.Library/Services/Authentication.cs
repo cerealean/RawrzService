@@ -11,7 +11,7 @@ namespace RawrzMe.Library.Services
         private readonly UserDao _userDao = new UserDao();
         private readonly Encoding _defaultEncoding = Encoding.UTF8;
 
-        public bool IsPasswordValid(Models.Login loginModel)
+        public bool AreUserCredentialsValid(Models.Login loginModel)
         {
             var userAuthentication = _userDao.GetUserAuthenticationByUsername(loginModel.Username);
             var bytePassword = _defaultEncoding.GetBytes(loginModel.Password);

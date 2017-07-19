@@ -13,7 +13,7 @@ namespace RawrzService.Controllers
             {
                 HttpStatusCode responseCode;
 
-                if (authentication.IsPasswordValid(loginModel))
+                if (authentication.AreUserCredentialsValid(loginModel))
                 {
                     authentication.UpdatePassword(loginModel);
                     responseCode = HttpStatusCode.NoContent;
