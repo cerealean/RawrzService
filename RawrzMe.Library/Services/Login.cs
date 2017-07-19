@@ -1,15 +1,21 @@
-﻿using RawrzMe.Library.Daos;
+﻿using System;
+using RawrzMe.Library.Daos;
+using RawrzMe.Library.Models;
 
 namespace RawrzMe.Library.Services
 {
-    public class Login
+    public class Login : IDisposable
     {
-        public Models.User AttemptLogin(Models.Login loginModel)
+        private readonly UserDao _userDao = new UserDao();
+
+        public User AttemptLogin(Models.Login loginModel)
         {
-            using (var dao = new UserDao())
-            {
-                return dao.GetUserByUsername(loginModel.Username);
-            }
+            return _userDao.GetUserByUsername(loginModel.Username);
+        }
+
+        public void Dispose()
+        {
+            _userDao?.Dispose();
         }
     }
 }

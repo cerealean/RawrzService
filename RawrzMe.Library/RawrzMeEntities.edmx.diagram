@@ -5,7 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="62392eac123e46719149f2b448575601" Name="Diagram1">
-        <EntityTypeShape EntityType="RawrzMeModel.User" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RawrzMeModel.user_authentication" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="RawrzMeModel.user" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="RawrzMeModel.FK_user_authentication_users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

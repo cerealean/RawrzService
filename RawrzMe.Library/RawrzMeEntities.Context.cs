@@ -25,6 +25,7 @@ namespace RawrzMe.Library
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<user_authentication> user_authentication { get; set; }
+        public virtual DbSet<user> users { get; set; }
     }
 }

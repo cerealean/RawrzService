@@ -1,13 +1,18 @@
-﻿using RawrzMe.Library.Models;
+﻿using System.Net;
+using System.Net.Http;
+using RawrzMe.Library.Models;
 using System.Web.Http;
 
 namespace RawrzService.Controllers
 {
     public class LoginController : ApiController
     {
-        public User Post(Login loginModel)
+        public HttpResponseMessage Post(Login loginModel)
         {
-            return new RawrzMe.Library.Services.Login().AttemptLogin(loginModel);
+            var user = new RawrzMe.Library.Services.Login().AttemptLogin(loginModel);
+            var isUserFound = user == null || user.Id == 0;
+            var responseStatusCode = isUserFound ? HttpStatusCode.Unauthorized : HttpStatusCode.OK;
+            return Request.CreateResponse(responseStatusCode, user);
         }
     }
 }

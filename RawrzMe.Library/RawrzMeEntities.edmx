@@ -5,7 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="RawrzMeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Users">
+        <EntityType Name="user_authentication">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hash" Type="varbinary(max)" Nullable="false" />
+          <Property Name="salt" Type="varbinary(max)" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -20,19 +29,54 @@
           <Property Name="can_email" Type="bit" Nullable="false" />
           <Property Name="two_factor_authentication" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_user_authentication_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="user_authentication" Type="Self.user_authentication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user_authentication">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="RawrzMeModelStoreContainer">
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_authentication" EntityType="Self.user_authentication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_user_authentication_users" Association="Self.FK_user_authentication_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_authentication" EntitySet="user_authentication" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RawrzMeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="User">
+        <EntityContainer Name="RawrzMeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="user_authentication" EntityType="RawrzMeModel.user_authentication" />
+          <EntitySet Name="users" EntityType="RawrzMeModel.user" />
+          <AssociationSet Name="FK_user_authentication_users" Association="RawrzMeModel.FK_user_authentication_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="user_authentication" EntitySet="user_authentication" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="user_authentication">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="hash" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="salt" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="RawrzMeModel.FK_user_authentication_users" FromRole="user_authentication" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="is_active" Type="Boolean" Nullable="false" />
           <Property Name="first_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="last_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -41,19 +85,39 @@
           <Property Name="can_text" Type="Boolean" Nullable="false" />
           <Property Name="can_email" Type="Boolean" Nullable="false" />
           <Property Name="two_factor_authentication" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="user_authentication" Relationship="RawrzMeModel.FK_user_authentication_users" FromRole="user" ToRole="user_authentication" />
         </EntityType>
-        <EntityContainer Name="RawrzMeEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Users" EntityType="Self.User" />
-        </EntityContainer>
+        <Association Name="FK_user_authentication_users">
+          <End Type="RawrzMeModel.user" Role="user" Multiplicity="1" />
+          <End Type="RawrzMeModel.user_authentication" Role="user_authentication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="user_authentication">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RawrzMeModelStoreContainer" CdmEntityContainer="RawrzMeEntities">
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="RawrzMeModel.User">
-              <MappingFragment StoreEntitySet="Users">
+          <EntitySetMapping Name="user_authentication">
+            <EntityTypeMapping TypeName="RawrzMeModel.user_authentication">
+              <MappingFragment StoreEntitySet="user_authentication">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="RawrzMeModel.user">
+              <MappingFragment StoreEntitySet="users">
                 <ScalarProperty Name="two_factor_authentication" ColumnName="two_factor_authentication" />
                 <ScalarProperty Name="can_email" ColumnName="can_email" />
                 <ScalarProperty Name="can_text" ColumnName="can_text" />
@@ -61,9 +125,9 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="last_name" ColumnName="last_name" />
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

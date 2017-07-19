@@ -12,8 +12,14 @@ namespace RawrzMe.Library
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class user
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public user()
+        {
+            this.user_authentication = new HashSet<user_authentication>();
+        }
+    
         public int id { get; set; }
         public string username { get; set; }
         public bool is_active { get; set; }
@@ -24,5 +30,8 @@ namespace RawrzMe.Library
         public bool can_text { get; set; }
         public bool can_email { get; set; }
         public bool two_factor_authentication { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_authentication> user_authentication { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     internal static class User
     {
-        internal static Models.User ToUserModel(this RawrzMe.Library.User user)
+        internal static Models.User ToUserModel(this user user)
         {
             return new Models.User
             {
