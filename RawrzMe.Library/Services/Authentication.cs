@@ -19,6 +19,11 @@ namespace RawrzMe.Library.Services
             return PasswordHash.ScryptHashStringVerify(userAuthentication.Hash, bytePassword);
         }
 
+        public bool DoesUsernameCurrentlyExist(string username)
+        {
+            return _userDao.GetUserByUsername(username) != null;
+        }
+
         public void CreateNewUser(NewUser newUser)
         {
             _userDao.ExecuteInTransaction(() =>

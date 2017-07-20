@@ -11,9 +11,17 @@ namespace RawrzService.Controllers
         {
             using (var authentication = new RawrzMe.Library.Services.Authentication())
             {
-                HttpStatusCode responseCode = HttpStatusCode.NoContent;
+                HttpStatusCode responseCode;
 
-                authentication.CreateNewUser(newUser);
+                if (authentication.DoesUsernameCurrentlyExist(newUser.Username))
+                {
+                    responseCode = HttpStatusCode.Conflict;
+                }
+                else
+                {
+                    authentication.CreateNewUser(newUser);
+                    responseCode = HttpStatusCode.NoContent;
+                }
 
                 return Request.CreateResponse(responseCode);
             }
