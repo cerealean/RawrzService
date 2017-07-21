@@ -5,8 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="62392eac123e46719149f2b448575601" Name="Diagram1">
-        <EntityTypeShape EntityType="RawrzMeModel.user_authentication" Width="1.5" PointX="3" PointY="1.5" />
-        <EntityTypeShape EntityType="RawrzMeModel.user" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="RawrzMeModel.email_addresses" Width="1.5" PointX="3" PointY="9.25" />
+        <EntityTypeShape EntityType="RawrzMeModel.phone_numbers" Width="1.5" PointX="6" PointY="4.125" />
+        <EntityTypeShape EntityType="RawrzMeModel.phone_types" Width="1.5" PointX="3.75" PointY="6.625" />
+        <EntityTypeShape EntityType="RawrzMeModel.user_authentication" Width="1.5" PointX="3" PointY="3" />
+        <EntityTypeShape EntityType="RawrzMeModel.user" Width="1.5" PointX="0.75" PointY="4.125" />
+        <AssociationConnector Association="RawrzMeModel.FK_email_addresses_users" />
+        <AssociationConnector Association="RawrzMeModel.FK_phone_numbers_phone_types" />
+        <AssociationConnector Association="RawrzMeModel.FK_phone_numbers_users" />
         <AssociationConnector Association="RawrzMeModel.FK_user_authentication_users" />
       </Diagram>
     </edmx:Diagrams>

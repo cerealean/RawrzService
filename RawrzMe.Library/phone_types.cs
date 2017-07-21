@@ -12,28 +12,18 @@ namespace RawrzMe.Library
     using System;
     using System.Collections.Generic;
     
-    public partial class user
+    public partial class phone_types
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public user()
+        public phone_types()
         {
-            this.email_addresses = new HashSet<email_addresses>();
             this.phone_numbers = new HashSet<phone_numbers>();
-            this.user_authentication = new HashSet<user_authentication>();
         }
     
         public int id { get; set; }
-        public string username { get; set; }
-        public bool is_active { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public bool two_factor_authentication { get; set; }
+        public string type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<email_addresses> email_addresses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<phone_numbers> phone_numbers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<user_authentication> user_authentication { get; set; }
     }
 }

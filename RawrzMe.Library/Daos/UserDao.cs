@@ -54,12 +54,10 @@ namespace RawrzMe.Library.Daos
             {
                 first_name = newUser.FirstName,
                 last_name = newUser.LastName,
-                email = newUser.Email,
                 is_active = true,
-                can_email = newUser.CanEmail,
-                can_text = newUser.CanText,
-                phone = newUser.Phone,
-                username = newUser.Username
+                username = newUser.Username,
+                email_addresses = newUser.EmailAddresses.ToEmailAddressEntities(),
+                phone_numbers = newUser.PhoneNumbers.ToPhoneNumberEntities()
             };
             _rawrzMeEntities.users.Add(newUserEntity);
             _rawrzMeEntities.SaveChanges();

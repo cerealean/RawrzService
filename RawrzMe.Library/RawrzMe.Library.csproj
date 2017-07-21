@@ -55,16 +55,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Daos\UserDao.cs" />
+    <Compile Include="email_addresses.cs">
+      <DependentUpon>RawrzMeEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Enums\PhoneType.cs" />
     <Compile Include="Exceptions\UsernameAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Mapper\Email.cs" />
+    <Compile Include="Mapper\Phone.cs" />
     <Compile Include="Mapper\User.cs" />
     <Compile Include="Mapper\UserAuthentication.cs" />
     <Compile Include="Models\Authentication.cs" />
+    <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\NewUser.cs" />
     <Compile Include="Models\PasswordChange.cs" />
+    <Compile Include="Models\Phone.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserAuthentication.cs" />
+    <Compile Include="phone_numbers.cs">
+      <DependentUpon>RawrzMeEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="phone_types.cs">
+      <DependentUpon>RawrzMeEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawrzMeEntities.Context.cs">
       <AutoGen>True</AutoGen>

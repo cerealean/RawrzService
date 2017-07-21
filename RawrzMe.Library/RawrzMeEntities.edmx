@@ -5,6 +5,35 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="RawrzMeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="email_addresses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email_address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="is_primary" Type="bit" Nullable="false" />
+          <Property Name="is_verified" Type="bit" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="phone_numbers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="phone_number" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="phone_type_id" Type="int" Nullable="false" />
+          <Property Name="can_text" Type="bit" Nullable="false" />
+          <Property Name="is_verified" Type="bit" Nullable="false" />
+          <Property Name="is_primary" Type="bit" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="phone_types">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="user_authentication">
           <Key>
             <PropertyRef Name="id" />
@@ -23,12 +52,44 @@
           <Property Name="is_active" Type="bit" Nullable="false" />
           <Property Name="first_name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="last_name" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="phone" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="can_text" Type="bit" Nullable="false" />
-          <Property Name="can_email" Type="bit" Nullable="false" />
           <Property Name="two_factor_authentication" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_email_addresses_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="email_addresses" Type="Self.email_addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="email_addresses">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_phone_numbers_phone_types">
+          <End Role="phone_types" Type="Self.phone_types" Multiplicity="1" />
+          <End Role="phone_numbers" Type="Self.phone_numbers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="phone_types">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="phone_numbers">
+              <PropertyRef Name="phone_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_phone_numbers_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="phone_numbers" Type="Self.phone_numbers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="phone_numbers">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_user_authentication_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
           <End Role="user_authentication" Type="Self.user_authentication" Multiplicity="*" />
@@ -42,8 +103,23 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RawrzMeModelStoreContainer">
+          <EntitySet Name="email_addresses" EntityType="Self.email_addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="phone_numbers" EntityType="Self.phone_numbers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="phone_types" EntityType="Self.phone_types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_authentication" EntityType="Self.user_authentication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_email_addresses_users" Association="Self.FK_email_addresses_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="email_addresses" EntitySet="email_addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_phone_numbers_phone_types" Association="Self.FK_phone_numbers_phone_types">
+            <End Role="phone_types" EntitySet="phone_types" />
+            <End Role="phone_numbers" EntitySet="phone_numbers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_phone_numbers_users" Association="Self.FK_phone_numbers_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="phone_numbers" EntitySet="phone_numbers" />
+          </AssociationSet>
           <AssociationSet Name="FK_user_authentication_users" Association="Self.FK_user_authentication_users">
             <End Role="users" EntitySet="users" />
             <End Role="user_authentication" EntitySet="user_authentication" />
@@ -54,13 +130,61 @@
     <edmx:ConceptualModels>
       <Schema Namespace="RawrzMeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RawrzMeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="email_addresses" EntityType="RawrzMeModel.email_addresses" />
+          <EntitySet Name="phone_numbers" EntityType="RawrzMeModel.phone_numbers" />
+          <EntitySet Name="phone_types" EntityType="RawrzMeModel.phone_types" />
           <EntitySet Name="user_authentication" EntityType="RawrzMeModel.user_authentication" />
           <EntitySet Name="users" EntityType="RawrzMeModel.user" />
+          <AssociationSet Name="FK_email_addresses_users" Association="RawrzMeModel.FK_email_addresses_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="email_addresses" EntitySet="email_addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_phone_numbers_phone_types" Association="RawrzMeModel.FK_phone_numbers_phone_types">
+            <End Role="phone_types" EntitySet="phone_types" />
+            <End Role="phone_numbers" EntitySet="phone_numbers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_phone_numbers_users" Association="RawrzMeModel.FK_phone_numbers_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="phone_numbers" EntitySet="phone_numbers" />
+          </AssociationSet>
           <AssociationSet Name="FK_user_authentication_users" Association="RawrzMeModel.FK_user_authentication_users">
             <End Role="user" EntitySet="users" />
             <End Role="user_authentication" EntitySet="user_authentication" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="email_addresses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email_address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="is_primary" Type="Boolean" Nullable="false" />
+          <Property Name="is_verified" Type="Boolean" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="RawrzMeModel.FK_email_addresses_users" FromRole="email_addresses" ToRole="user" />
+        </EntityType>
+        <EntityType Name="phone_numbers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="phone_number" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="phone_type_id" Type="Int32" Nullable="false" />
+          <Property Name="can_text" Type="Boolean" Nullable="false" />
+          <Property Name="is_verified" Type="Boolean" Nullable="false" />
+          <Property Name="is_primary" Type="Boolean" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="phone_types" Relationship="RawrzMeModel.FK_phone_numbers_phone_types" FromRole="phone_numbers" ToRole="phone_types" />
+          <NavigationProperty Name="user" Relationship="RawrzMeModel.FK_phone_numbers_users" FromRole="phone_numbers" ToRole="user" />
+        </EntityType>
+        <EntityType Name="phone_types">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="phone_numbers" Relationship="RawrzMeModel.FK_phone_numbers_phone_types" FromRole="phone_types" ToRole="phone_numbers" />
+        </EntityType>
         <EntityType Name="user_authentication">
           <Key>
             <PropertyRef Name="id" />
@@ -80,13 +204,47 @@
           <Property Name="is_active" Type="Boolean" Nullable="false" />
           <Property Name="first_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="last_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="phone" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="can_text" Type="Boolean" Nullable="false" />
-          <Property Name="can_email" Type="Boolean" Nullable="false" />
           <Property Name="two_factor_authentication" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="email_addresses" Relationship="RawrzMeModel.FK_email_addresses_users" FromRole="user" ToRole="email_addresses" />
+          <NavigationProperty Name="phone_numbers" Relationship="RawrzMeModel.FK_phone_numbers_users" FromRole="user" ToRole="phone_numbers" />
           <NavigationProperty Name="user_authentication" Relationship="RawrzMeModel.FK_user_authentication_users" FromRole="user" ToRole="user_authentication" />
         </EntityType>
+        <Association Name="FK_email_addresses_users">
+          <End Type="RawrzMeModel.user" Role="user" Multiplicity="1" />
+          <End Type="RawrzMeModel.email_addresses" Role="email_addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="email_addresses">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_phone_numbers_phone_types">
+          <End Type="RawrzMeModel.phone_types" Role="phone_types" Multiplicity="1" />
+          <End Type="RawrzMeModel.phone_numbers" Role="phone_numbers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="phone_types">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="phone_numbers">
+              <PropertyRef Name="phone_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_phone_numbers_users">
+          <End Type="RawrzMeModel.user" Role="user" Multiplicity="1" />
+          <End Type="RawrzMeModel.phone_numbers" Role="phone_numbers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="phone_numbers">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_user_authentication_users">
           <End Type="RawrzMeModel.user" Role="user" Multiplicity="1" />
           <End Type="RawrzMeModel.user_authentication" Role="user_authentication" Multiplicity="*" />
@@ -99,12 +257,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RawrzMeModelStoreContainer" CdmEntityContainer="RawrzMeEntities">
+          <EntitySetMapping Name="email_addresses">
+            <EntityTypeMapping TypeName="RawrzMeModel.email_addresses">
+              <MappingFragment StoreEntitySet="email_addresses">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="is_verified" ColumnName="is_verified" />
+                <ScalarProperty Name="is_primary" ColumnName="is_primary" />
+                <ScalarProperty Name="email_address" ColumnName="email_address" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="phone_numbers">
+            <EntityTypeMapping TypeName="RawrzMeModel.phone_numbers">
+              <MappingFragment StoreEntitySet="phone_numbers">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="is_primary" ColumnName="is_primary" />
+                <ScalarProperty Name="is_verified" ColumnName="is_verified" />
+                <ScalarProperty Name="can_text" ColumnName="can_text" />
+                <ScalarProperty Name="phone_type_id" ColumnName="phone_type_id" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="phone_types">
+            <EntityTypeMapping TypeName="RawrzMeModel.phone_types">
+              <MappingFragment StoreEntitySet="phone_types">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="user_authentication">
             <EntityTypeMapping TypeName="RawrzMeModel.user_authentication">
               <MappingFragment StoreEntitySet="user_authentication">
@@ -119,10 +309,6 @@
             <EntityTypeMapping TypeName="RawrzMeModel.user">
               <MappingFragment StoreEntitySet="users">
                 <ScalarProperty Name="two_factor_authentication" ColumnName="two_factor_authentication" />
-                <ScalarProperty Name="can_email" ColumnName="can_email" />
-                <ScalarProperty Name="can_text" ColumnName="can_text" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="last_name" ColumnName="last_name" />
                 <ScalarProperty Name="first_name" ColumnName="first_name" />
                 <ScalarProperty Name="is_active" ColumnName="is_active" />

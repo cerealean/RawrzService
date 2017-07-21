@@ -10,10 +10,8 @@
                 Username = user.username,
                 FirstName = user.first_name,
                 LastName = user.last_name,
-                Email = user.email,
-                Phone = user.phone,
-                CanEmail = user.can_email,
-                CanText = user.can_text,
+                EmailAddresses = user.email_addresses.ToEmails(),
+                PhoneNumbers = user.phone_numbers.ToPhones(),
                 TwoFactorAuthentication = user.two_factor_authentication
             };
         }

@@ -25,6 +25,9 @@ namespace RawrzMe.Library
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<email_addresses> email_addresses { get; set; }
+        public virtual DbSet<phone_numbers> phone_numbers { get; set; }
+        public virtual DbSet<phone_types> phone_types { get; set; }
         public virtual DbSet<user_authentication> user_authentication { get; set; }
         public virtual DbSet<user> users { get; set; }
     }
