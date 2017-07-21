@@ -10,8 +10,8 @@ namespace RawrzService.Controllers
         public HttpResponseMessage Post(Login loginModel)
         {
             var user = new RawrzMe.Library.Services.Login().AttemptLogin(loginModel);
-            var isUserFound = user == null || user.Id == 0;
-            var responseStatusCode = isUserFound ? HttpStatusCode.Unauthorized : HttpStatusCode.OK;
+            var isUserFound = user != null && user.Id != 0;
+            var responseStatusCode = isUserFound ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
             return Request.CreateResponse(responseStatusCode, user);
         }
     }
