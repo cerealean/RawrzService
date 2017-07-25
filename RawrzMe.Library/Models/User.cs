@@ -10,5 +10,6 @@
         public Phone[] PhoneNumbers = {};
         public bool TwoFactorAuthentication;
         public Authentication Authentication;
+        public bool IsActive;
     }
 }

@@ -12,7 +12,8 @@
                 LastName = user.last_name,
                 EmailAddresses = user.email_addresses.ToEmails(),
                 PhoneNumbers = user.phone_numbers.ToPhones(),
-                TwoFactorAuthentication = user.two_factor_authentication
+                TwoFactorAuthentication = user.two_factor_authentication,
+                IsActive = user.is_active
             };
         }
     }

@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Services\Authentication.cs" />
     <Compile Include="Services\Login.cs" />
+    <Compile Include="Services\User.cs" />
     <Compile Include="user.cs">
       <DependentUpon>RawrzMeEntities.tt</DependentUpon>
     </Compile>

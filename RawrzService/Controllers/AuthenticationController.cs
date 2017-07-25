@@ -7,26 +7,6 @@ namespace RawrzService.Controllers
 {
     public class AuthenticationController : ApiController
     {
-        public HttpResponseMessage Post(NewUser newUser)
-        {
-            using (var authentication = new RawrzMe.Library.Services.Authentication())
-            {
-                HttpStatusCode responseCode;
-
-                if (authentication.DoesUsernameCurrentlyExist(newUser.Username))
-                {
-                    responseCode = HttpStatusCode.Conflict;
-                }
-                else
-                {
-                    authentication.CreateNewUser(newUser);
-                    responseCode = HttpStatusCode.NoContent;
-                }
-
-                return Request.CreateResponse(responseCode);
-            }
-        }
-
         public HttpResponseMessage Put(PasswordChange passwordChange)
         {
             using (var authentication = new RawrzMe.Library.Services.Authentication())

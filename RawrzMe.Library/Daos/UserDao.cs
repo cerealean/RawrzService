@@ -1,6 +1,7 @@
 ﻿using RawrzMe.Library.Mapper;
 using System;
 using System.Linq;
+using RawrzMe.Library.Exceptions;
 using RawrzMe.Library.Models;
 
 namespace RawrzMe.Library.Daos
@@ -57,9 +58,24 @@ namespace RawrzMe.Library.Daos
                 is_active = true,
                 username = newUser.Username,
                 email_addresses = newUser.EmailAddresses.ToEmailAddressEntities(),
-                phone_numbers = newUser.PhoneNumbers.ToPhoneNumberEntities()
+                phone_numbers = newUser.PhoneNumbers.ToPhoneNumberEntities(),
+                two_factor_authentication = newUser.TwoFactorAuthentication
             };
             _rawrzMeEntities.users.Add(newUserEntity);
+            _rawrzMeEntities.SaveChanges();
+        }
+
+        internal void UpdateUser(Models.User user)
+        {
+            var userEntity = _rawrzMeEntities.users.FirstOrDefault(u => u.id == user.Id);
+            if (userEntity == null)
+            {
+                throw new UserNotFoundException($"User with ID {user.Id} not found");
+            }
+            userEntity.first_name = user.FirstName;
+            userEntity.last_name = user.LastName;
+            userEntity.is_active = user.IsActive;
+            userEntity.two_factor_authentication = user.TwoFactorAuthentication;
             _rawrzMeEntities.SaveChanges();
         }
 
