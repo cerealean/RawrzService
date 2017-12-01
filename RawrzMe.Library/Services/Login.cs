@@ -8,7 +8,7 @@ namespace RawrzMe.Library.Services
     {
         private readonly UserDao _userDao = new UserDao();
 
-        public User AttemptLogin(Models.Login loginModel)
+        public Models.User AttemptLogin(Models.Login loginModel)
         {
             return _userDao.GetUserByUsername(loginModel.Username);
         }

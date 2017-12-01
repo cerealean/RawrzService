@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawrzService", "RawrzService\RawrzService.csproj", "{CB564E0E-F8B3-466C-91D6-90465DF7F887}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RawrzService.Database", "RawrzService.Database\RawrzService.Database.sqlproj", "{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawrzMe.Library", "RawrzMe.Library\RawrzMe.Library.csproj", "{224A833E-BB6F-48BB-8A7B-D289E43EF613}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6ACAFE2F-8270-484C-93EC-42AEE900B861}"
@@ -21,12 +19,6 @@ Global
 		{CB564E0E-F8B3-466C-91D6-90465DF7F887}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB564E0E-F8B3-466C-91D6-90465DF7F887}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB564E0E-F8B3-466C-91D6-90465DF7F887}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7B59B9F-C7C0-4FFD-8B1F-498AE7393E42}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{224A833E-BB6F-48BB-8A7B-D289E43EF613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{224A833E-BB6F-48BB-8A7B-D289E43EF613}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{224A833E-BB6F-48BB-8A7B-D289E43EF613}.Release|Any CPU.ActiveCfg = Release|Any CPU
